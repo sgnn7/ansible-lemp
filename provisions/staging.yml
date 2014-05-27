@@ -1,7 +1,6 @@
 ---
 - name: install lnmp stack
   hosts: endlessm
-  remote_user: nbap
   sudo: yes
 
   vars_files:
