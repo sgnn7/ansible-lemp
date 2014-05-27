@@ -1,2 +1,5 @@
-[endlessm]
+[cms_testing]
 linode-cms ansible_connection=ssh ansible_ssh_host=10.0.0.112 ansible_ssh_user=nbap
+
+[cms_hosts]
+cms.endlessm.com ansible_connection=ssh ansible_ssh_user=root
