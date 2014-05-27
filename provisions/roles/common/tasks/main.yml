@@ -3,6 +3,7 @@
     user:
       name: "{{ deploy_user }}"
       #TO-DO still need to figure out the best way to set a password here
+      # You can use a crypted password here (http://docs.ansible.com/user_module.html)
       password: 123
       groups: www-data
       append: yes
@@ -11,8 +12,11 @@
   - name: Add SSH public key to user remote
     authorized_key:
       user={{ deploy_user }}
+      # This should be public key from a folder in the repo with the private
+      # key secure somewere. Use of current user's ssh key is not preferred.
       key="{{ lookup('file', "~/.ssh/id_rsa.pub") }}"
 
+  # You should copy a template to /etc/sudoers.d/ instead of editing sudoers directly
   - name: Add user remote to sudoers
     lineinfile:
       "dest=/etc/sudoers
@@ -20,6 +24,10 @@
       line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL'
       state=present"
 
+  # This could disconnect the ansible user or at the very least prevent
+  # multiple ansible runs so two entries are needed in the group:
+  # foo ssh_user=root
+  # foo ssh_user=deploy_user
   - name: Disallow root SSH access
     lineinfile:
       dest=/etc/ssh/sshd_config
@@ -27,7 +35,7 @@
       line="PermitRootLogin no"
       state=present
     notify:
-      - restart sshd      
+      - restart sshd
 
   - name: update cache/upgrade pkgs
     apt: update_cache=yes upgrade=dist cache_valid_time=3600
@@ -50,6 +58,7 @@
       - zip
       - unzip
       - subversion
+      # You should install fail2ban here
 
     tags:
       - apt

@@ -14,7 +14,7 @@
       tags:
         - php-fpm
 
-
+    # Are these needed anymore? If they're optional they should be using "when:" param
 
 
     # - name: configure php5 www.conf default
@@ -66,6 +66,7 @@
       tags: php-fpm
 
 
+    # Need the cache here as well
     - name: install phpmyadmin
       apt: name=phpmyadmin state=installed
 

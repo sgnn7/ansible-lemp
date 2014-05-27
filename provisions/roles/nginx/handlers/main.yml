@@ -1,4 +1,5 @@
 ---
+  # Nginx should be using reload vs restart
   - name: restart nginx
     service: name=nginx state=restarted
     tags:

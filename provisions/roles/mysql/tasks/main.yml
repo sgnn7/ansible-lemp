@@ -1,5 +1,6 @@
 ---
 
+  # You should add the cache param in case these are run separately
   - name: install mysql
     apt: pkg={{ item }}
     with_items:

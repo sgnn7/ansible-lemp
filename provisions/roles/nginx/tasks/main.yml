@@ -1,5 +1,7 @@
 ---
-
+    # Use nginx from nginx repo and not from default ubuntu repos. Some
+    # paths change so be careful of those. http://wiki.nginx.org/Install
+    # I'm not sure how that would work with naxsi though.
     - name: install nginx
       apt: pkg={{ item }}
       with_items:
