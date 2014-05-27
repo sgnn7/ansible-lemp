@@ -1,0 +1,55 @@
+---
+  - name: create deploy user
+    user:
+      name: "{{ deploy_user }}"
+      #TO-DO still need to figure out the best way to set a password here
+      password: 123
+      groups: www-data
+      append: yes
+      shell: /bin/bash
+
+  - name: Add SSH public key to user remote
+    authorized_key:
+      user={{ deploy_user }}
+      key="{{ lookup('file', "~/.ssh/id_rsa.pub") }}"
+
+  - name: Add user remote to sudoers
+    lineinfile:
+      "dest=/etc/sudoers
+      regexp='^{{ deploy_user }} ALL'
+      line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL'
+      state=present"
+
+  - name: Disallow root SSH access
+    lineinfile:
+      dest=/etc/ssh/sshd_config
+      regexp="^PermitRootLogin"
+      line="PermitRootLogin no"
+      state=present
+    notify:
+      - restart sshd      
+
+  - name: update cache/upgrade pkgs
+    apt: update_cache=yes upgrade=dist cache_valid_time=3600
+    tags:
+      - apt
+
+  - name: install dev pkgs
+    apt: pkg={{ item }}
+    with_items:
+      - linux-headers-generic
+      - build-essential
+      - nfs-common
+      - nfs-kernel-server
+      - rpcbind
+      - curl
+      - vim
+      - htop
+      - git
+      - python-apt
+      - zip
+      - unzip
+      - subversion
+
+    tags:
+      - apt
