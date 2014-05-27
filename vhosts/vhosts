@@ -1,8 +1,0 @@
-# This file contains a list of the domains hosted on this virtual machine.
-# 
-# In addition to this file, other files named vvv-hosts can
-# be created with additional domain information. These will be
-# automatically parsed as long as they are located in subdirectories
-# of the www/ directory.
-#
-127.0.0.1
