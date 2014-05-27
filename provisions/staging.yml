@@ -1,6 +1,6 @@
 ---
 - name: install lnmp stack
-  hosts: endlessm
+  hosts: cms_hosts
   sudo: yes
 
   vars_files:
